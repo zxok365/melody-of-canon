@@ -1,0 +1,63 @@
+#include <iostream>
+#include <cstdio>
+#include <cstring>
+#include <algorithm>
+#include <vector>
+using namespace std;
+vector<int> G[100005];
+int main()
+{
+	int T, z = 0;
+	scanf("%d", &T);
+	while (T --)
+	{
+		int i, j, k, l, n, q, m;
+		scanf("%d %d %d", &n, &m);
+		for (i = 1; i <= n; ++ i)
+		{
+			vecotr<int> tmp;
+			G[i].swap(tmp);
+		}
+		for (i = 1; i <= m; ++ i)
+		{
+			scanf("%d%d", &j, &k);
+			G[j].push_back(k);
+			G[k].push_back(j);
+		}
+		for (i = 1; i <= n; ++ i) sort(G[i].begin(), G[i].end());
+		scanf("%d", &q);
+		printf("Case #%d:\n", ++ z);
+		for (i = 1; i <= q; ++ i)
+		{
+			int s, t;
+			scanf("%d %d", &s, &t);
+			if (s == t)
+			{
+				printf("0 1\n");
+			}
+			else if (lower_bound(G[s].begin(), G[s].end(), t) != G[s].end())
+			{
+				int ans = upper_bound(G[s].begin(), G[s].end(), t) - lower_bound(G[s].begin(), G[s].end(), t);
+				printf("%d %d\n", 1, ans);
+			}
+			else
+			{
+				j = k = 0;
+				int cnt = 0, ans = 0;
+				for (k = 0; k < G[t].size() && j < G[t].size(); ++ k)
+				{
+					if (k && G[t][k] == G[t][k - 1]) {ans += cnt; continue;}
+					cnt = 1;
+					while (G[s][j] < G[t][k]) ++ j;
+					while (j < G[t].size() && G[s][j] == G[t][k])
+					{
+						++j;
+						++cnt;
+					}	
+				}
+				printf("%d %d\n", 2, ans);
+			}
+		}
+	}
+}
+

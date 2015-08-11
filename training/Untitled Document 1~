@@ -1,0 +1,22 @@
+set ruler
+set number
+set cindent
+set smartindent
+set autoindent
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+set bs=2
+set mouse=a
+
+syntax on
+
+nmap <C-A> ggVG
+vmap <C-C> "+y
+
+map <F9> :!g++ % -o %< -g -Wall -Wextra -Wconversion <CR>
+map <F8> :!time ./%< < %<.in <CR>
+map <F5> :!time ./%< <CR>
+map <F3> :vnew %<.in <CR>
+map <F4> :!gedit % <CR>
+
