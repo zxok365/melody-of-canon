@@ -1,0 +1,23 @@
+#include<cstdio>
+#include<iostream>
+
+using namespace std;
+
+int a[5005];
+
+int main() {
+	int tot = 0, n;
+	while (1) {
+		tot++;
+		scanf("%d", &n);
+		if (n == 0) break;
+		int sum = 0;
+		for (int i = 1; i <= n; i ++) {
+			scanf("%d", &a[i]);
+			if (a[i] != 0) sum++;
+				else sum--;
+		}
+		printf("Case %d: %d\n", tot, sum);
+	}
+	return 0;
+}

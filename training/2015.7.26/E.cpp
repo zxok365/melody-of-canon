@@ -1,0 +1,53 @@
+#include<iostream>
+#include<cstdio>
+using namespace std;
+int now[111],nxt[111];
+int f[111];
+int dp[111][111];
+int n, m;
+int test_case;
+
+
+int search(int l, int r){
+//	cout << l << ' ' << r << ' ' << dp[l][r] << endl;
+	if (dp[l][r] != 0) return dp[l][r];
+	if (l > r)
+		return 0;
+	if (l == r)
+	{
+		dp[l][r] = 1;
+		return 1;
+	}
+	int tmp = search(l, r - 1) + 1;
+	for (int j = nxt[r]; j >= l; j = nxt[j]){
+		tmp = min(tmp,search(l, j) + search(j + 1, r - 1));
+	}
+	dp[l][r] = tmp;
+	return tmp;
+
+}
+int main(){
+	scanf("%d", &test_case);
+	for (int time = 1; time <= test_case; time++)
+	{
+		scanf("%d%d", &n, &m);
+		for (int i = 1; i <= m; i++) now[i] = 0;
+		for (int i = 1; i <= n; i++) nxt[i] = 0;
+		for (int i = 1; i <= n; i++)
+			for (int j = 1; j <= n; j++)
+				dp[i][j] = 0;
+		for (int i = 1; i <= n; i++)
+		{
+			int tmp;
+			scanf("%d", &tmp);
+			f[i] = tmp;
+			nxt[i] = now[tmp];
+		//	cout << tmp << endl;
+			now[tmp] = i;
+		}
+//		cout <<'!' << endl;
+//		for (int i = 1; i <= n; i++) cout << nxt[i] << endl;
+		int ans = search(1, n);
+		printf("Case %d: %d\n",time, ans);
+	}
+}

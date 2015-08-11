@@ -1,0 +1,75 @@
+#include <cstdio>
+#include <cstdlib>
+#include <ctime>
+#include <cstring>
+#include <cmath>
+#include <algorithm>
+#define Mod 1000000007LL
+using namespace std;
+typedef long long ll;
+int tot = 1;
+int e[30001], next[30001], g[30001];
+int h[30001], ans[30001], size[30001];
+int iden[30001];
+bool mark[30001];
+int stack[30001];
+int n;
+int px[30001], py[30001];
+bool vis[30001];
+void Add(int u, int v)
+{
+	e[tot] = v; next[tot] = g[u]; g[u] = tot ++;
+	e[tot] = u; next[tot] = g[v]; g[v] = tot ++;
+}
+ll dfs(int x, int deep)
+{
+	ll sum = h[deep];
+	vis[x] = true;
+	for (int i = g[x]; i; i = next[i])
+		if (!vis[e[i]]) sum = (sum + 1LL * h[deep] * dfs(e[i], deep + 1) % Mod) % Mod;
+	return sum * sum % Mod;
+}
+void Work()
+{
+	scanf("%d", &n);
+	for (int i = 1; i <= n; i ++) h[i] = (ll )(rand()) * rand() % Mod, ans[i] = 0, size[i] = 0;
+	for (int i = 1; i < n; i ++)
+		scanf("%d %d", &px[i], &py[i]);
+	for (int i = 1; i < (1 << n); i ++)
+	{
+		int cnt = 0, id = 0, top = 0;
+		for (int j = 1; j <= n; j ++) mark[j] = 0;
+		for (int j = 1; j <= n; j ++)
+			if ((i >> (j - 1)) & 1) mark[j] = true, stack[++ top] = j;
+		size[top] ++;
+		for (int j = 1; j <= n; j ++) g[i] = 0;
+		tot = 1;
+		for (int j = 1; j < n; j ++)
+			if (mark[px[j]] && mark[py[j]]) Add(px[j], py[j]);
+		bool ok = false;
+		for (int j = 1; j <= top; j ++)
+		{
+			ll tmp = dfs(stack[j], 1);
+			for (int k = 1; k <= n; k ++) vis[k] = 0;
+			if (size[top] == 1) { iden[top] = tmp; break; }
+			else if (iden[top] == tmp) ok = true;
+		}
+		if (ok == false) ++ ans[top];
+		printf("%d\n", top);
+	}
+	int sum = 0;
+	for (int i = 1; i <= n; i ++) sum += ans[i];
+	printf("%d\n", sum);
+}
+int main( )
+{
+	int T;
+	srand(343);
+	scanf("%d", &T);
+	for (int i = 1; i <= T; i ++)
+	{
+		printf("Case #%d: ", i);
+		Work();
+	}
+	return 0;
+}

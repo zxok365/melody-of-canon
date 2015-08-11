@@ -1,0 +1,12 @@
+(a|b)*
+ab
+
+(a|b)
+a*b*
+
+a(ab)*a
+a(a|b)*ba
+
+a(ab)*b
+a(a|b)*ab
+
